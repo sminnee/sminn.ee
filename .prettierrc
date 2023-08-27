@@ -11,12 +11,6 @@
   "bracketSpacing": true,
   "arrowParens": "always",
   "proseWrap": "always",
-  "overrides": [
-    {
-      "files": "*.md",
-      "options": {
-        "printWidth": 100
-      }
-    }
-  ]
+  "overrides": [{ "files": "*.md", "options": { "printWidth": 100 } }],
+  { "plugins": ["@shopify/prettier-plugin-liquid"] },
 }
