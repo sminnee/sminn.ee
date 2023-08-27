@@ -125,3 +125,58 @@ hr {
   border-top: 1px var(--light-purple) solid;
   margin: 60px 120px 30px 120px;
 }
+
+@media (max-width: 600px) {
+  main.page {
+    flex-direction: column-reverse;
+  }
+  aside.sidebar {
+    min-height: auto;
+    max-width: none;
+    padding: 15px 30px;
+  }
+  aside.sidebar h1 {
+    cursor: pointer;
+  }
+  aside.sidebar > div {
+    display: none;
+  }
+  aside.sidebar .expanded {
+    display: block;
+    max-height: auto;
+    overflow: hidden;
+    animation-duration: 0.2s;
+    animation-name: slideDown;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      max-height: 0;
+    }
+    to {
+      max-height: 700px;
+    }
+  }
+  @keyframes slideUp {
+    from {
+      max-height: 700px;
+    }
+    to {
+      max-height: 0;
+    }
+  }
+
+  aside.sidebar .collapsed {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    animation-duration: 0.2s;
+    animation-name: slideUp;
+    animation-timing-function: ease-in-out;
+  }
+
+  article {
+    padding: 30px;
+  }
+}
