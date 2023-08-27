@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Pushes a built docker image to the container registry
+
+APP=sminnee-www
+
+IMAGE=registry.sminn.ee/tangerine/$APP
+TAGPREFIX=""
+
+# Name of the deployment (assumes the default namespace)
+DEPLOYMENT=$APP
+
+# Named container in that deployment
+CONTAINER=$APP
+
+if [ "$1" = "" ]; then
+    echo "Usage: $0 (tag)"
+    exit 1
+fi
+
+if [ "$DOCKER_PASSWORD" = "" ]; then
+  echo "Set DOCKER_PASSWORD env var to the basicauth password for reigstry.sminn.ee"
+  exit 2
+fi
+
+IMAGE_FULL="$IMAGE:$TAGPREFIX$1"
+LATEST_FULL="$IMAGE:${TAGPREFIX}latest"
+
+docker login https://registry.sminn.ee -u registry -p $DOCKER_PASSWORD
+docker push $IMAGE_FULL
+
+docker tag $IMAGE_FULL $LATEST_FULL
+docker push $LATEST_FULL
