@@ -44,8 +44,13 @@ jobs:
     name: Deploy to production
     environment: prod
     runs-on: ubuntu-latest
+    needs:
+      - build
 
     steps:
+    - name: Checkout main
+      uses: actions/checkout@master
+
     - name: Update Kubernetes deployment
       run: bin/deploy $(echo $GITHUB_SHA | head -c7)
       env:
