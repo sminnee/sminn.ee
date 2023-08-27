@@ -1,0 +1,127 @@
+@font-face {
+  font-family: "Merriweather";
+  font-weight: 700;
+  src: url("../fonts/Merriweather-Bold.ttf");
+}
+
+:root {
+  --off-white: #faf8ff;
+  --off-black: #0f002f;
+  --dark-purple-gradient: linear-gradient(180deg, #23085c 0%, #3a1b7b 100%);
+  --light-purple: #d2bdff;
+  --dark-purple: #29096c;
+}
+
+@font-face {
+  font-family: "Merriweather";
+  font-weight: 300;
+  src: url("../fonts/Merriweather-Light.ttf");
+}
+
+@font-face {
+  font-family: "Abril Fatface";
+  font-weight: 400;
+  src: url("../fonts/AbrilFatface-Regular.ttf");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* background-image: url("./grid.png"); */
+  font-weight: 300;
+  font-family: "Merriweather", serif;
+  font-size: 18px;
+  line-height: 30px;
+  background-color: var(--off-white);
+  color: var(--off-black);
+}
+
+main.page {
+  display: flex;
+}
+div.article-holder {
+  display: flex;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+article {
+  padding: 30px 60px;
+  max-width: 960px;
+}
+aside.sidebar {
+  padding: 0 30px;
+  color: var(--off-white);
+  background: var(--dark-purple-gradient);
+  max-width: 420px;
+  min-height: 100vh;
+}
+a {
+  text-decoration: none;
+  color: var(--dark-purple);
+}
+a:hover {
+  text-decoration: underline;
+}
+
+aside.sidebar a {
+  color: var(--light-purple);
+}
+aside.sidebar img.avatar {
+  width: 100%;
+  border-radius: 0 50% 0 50%;
+  margin: 30px 0;
+}
+p {
+  margin-top: 0;
+  padding-top: 8px;
+  margin-bottom: 22px;
+}
+
+h1 {
+  font-size: 60px;
+  line-height: 90px;
+  font-weight: 400;
+  font-family: "Abril Fatface", serif;
+  padding-top: 21px;
+  margin-top: 0;
+  margin-bottom: 9px;
+}
+h1.tight {
+  margin-bottom: -21px;
+}
+
+h2 {
+  font-size: 40px;
+  line-height: 60px;
+  font-weight: 400;
+  font-family: "Abril Fatface", serif;
+  padding-top: 14px;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+h2.tight {
+  margin-bottom: -14px;
+}
+
+h3 {
+  font-size: 30px;
+  line-height: 30px;
+  font-weight: 400;
+  font-family: "Abril Fatface", serif;
+  padding-top: 3px;
+  margin-top: 0;
+  margin-bottom: 27px;
+}
+h3.tight {
+  margin-bottom: -3px;
+}
+
+hr {
+  border: none;
+  border-top: 1px var(--light-purple) solid;
+  margin: 60px 120px 30px 120px;
+}

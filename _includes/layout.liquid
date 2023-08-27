@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>@sminn.ee</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <div class="article-holder">
+        <article>
+          {% if title != "" %}
+          <h1 class="tight">{{ title }}</h1>
+          <p>
+            <strong>{{ date | postDate }}</strong>
+          </p>
+          <p><a href="/">← Home</a></p>
+          {% endif %}
+          {{ content }}
+        </article>
+      </div>
+      <aside class="sidebar">
+        <h1>@sminn.ee</h1>
+        <img class="avatar" src="/img/sam-avatar.jpg" alt="Photo of Sam" />
+
+        <p>
+          This is the personal blog of Sam Minnée. I co-founded <a href="https://silverstripe.com">Silverstripe</a>, was
+          CTO and CEO there. More recently, I’m currently CTO at <a href="https://www.tellfrankie.com">Frankie</a> and
+          technical co-founder of <a href="https://vcxo.directory">vCXO.directory</a> and
+          <a href="https://astronort.com">Astronort</a>.
+        </p>
+        <h2>Recentish posts</h2>
+        {% for post in collections.post %}
+        <p>
+          <strong
+            ><a href="{{ post.url }}">{{ post.data.title }}</a
+            ><br />
+            {{ post.data.date | postDate }}</strong
+          >
+        </p>
+        {% endfor %}
+      </aside>
+    </main>
+  </body>
+</html>
