@@ -3,37 +3,37 @@ title: "Why you should try ReScript"
 date: 2023-09-04
 ---
 
-[ReScript](https://rescript-lang.org/) is a variant of OCaml with a syntax more famililar to
+[ReScript](https://rescript-lang.org/) is a variant of OCaml with a syntax more familiar to
 JavaScript developers. A couple of years ago I built [Forecastel](https://app.forecastel.com/) in
-Rescript + React. More recently I’ve done most of my work in TypeScript I really enjoyed putting
-together a ReScript project.
+ReScript + React. More recently I’ve done most of my work in TypeScript, but I really enjoyed
+putting together a ReScript project.
 
 I don’t recommend that you drop everything and switch your current project to ReScript. However, if
 you spend a lot of time doing TypeScript development, I think you should give ReScript a try on a
-small project , because it will make you a better TypeScript programmer.
+small project because it will make you a better TypeScript programmer.
 
 ## What’s different from TypeScript
 
 ReScript has a **sound** type system, which means that in a compilable program, the type of every
 variable can be correctly inferred. To achieve this, it doesn’t attempt to replicate every feature
-of JavasScript. Instead, it takes the OCaml type system and translates it to JavaScript.
+of JavaScript. Instead, it takes the OCaml type system and translates it to JavaScript.
 
-TypeScript, on the other hand is explicitly a superset of JavaScript, and needs a more complex type
-system in order to cover that functionality. As a result, TypeScript’s type system is **unsound**.
-It’s commonplace in TypeScript code to assert type information in order to correct small mistakes
-that the type checker has made.
+TypeScript, on the other hand, is explicitly a superset of JavaScript and needs a more complex type
+system to cover that functionality. As a result, TypeScript’s type system is **unsound**. It’s
+commonplace in TypeScript code to assert type information to correct small mistakes that the type
+checker has made.
 
-The soundness of the type system means that there’s no type-coercion and no `any` or `unknown`
-types. If the code compiles you can be much more confident that you won’t see runtime bugs.
+The soundness of the type system means that there’s no type coercion and no `any` or `unknown`
+types. If the code compiles, you can be much more confident that you won’t see runtime bugs.
 
-(Technically, you _can_ build unsound escape hatches from the type system, when you link to
+(Technically, you _can_ build unsound escape hatches from the type system when you link to
 non-ReScript code, but this is a more deliberate step than simply tagging a variable as `any` in
 TypeScript).
 
 ## What’s great about it
 
-It’s hard to summarise the benefits of a language in a few short points, but 3 things that really
-appeal to me are tagged unions, match expressions, and function chaining.
+It’s hard to summarise the benefits of a language in a few short points, but three things that
+really appeal to me are tagged unions, match expressions, and function chaining.
 
 ### Tagged unions
 
