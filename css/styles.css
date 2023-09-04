@@ -57,16 +57,17 @@ div.article-holder {
   display: flex;
   justify-content: space-around;
   flex-grow: 1;
+  max-width: calc(100% - 420px);
 }
 article {
   padding: 30px 60px;
-  max-width: 960px;
+  max-width: calc(min(960px, 100%));
 }
 aside.sidebar {
   padding: 30px;
   color: var(--off-white);
   background: var(--dark-purple-gradient);
-  max-width: 420px;
+  width: 420px;
   min-height: 100vh;
 }
 a {
@@ -137,13 +138,13 @@ hr {
   margin: 60px 120px 30px 120px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
   main.page {
     flex-direction: column-reverse;
   }
   aside.sidebar {
     min-height: auto;
-    max-width: none;
+    width: auto;
     padding: 15px 30px;
   }
   aside.sidebar h1 {
@@ -186,9 +187,13 @@ hr {
     animation-name: slideUp;
     animation-timing-function: ease-in-out;
   }
+  div.article-holder {
+    max-width: 100%;
+  }
 
   article {
     padding: 30px;
+    max-width: 100%;
   }
 }
 
