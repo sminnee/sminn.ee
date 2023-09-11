@@ -38,9 +38,9 @@ practice, people will often show a some loyalty to their employer.
 - If people have been treated well in the past, they will both feel some compulsion to “pay that
   back” as well as assume that they are likely to be treated well in the future.
 
-Millennials, everyone’s favourite scapegoat generation, get a bad for showing a lack of appropriate
-corporate loyalty. For generations who had parents affected by the “corporate efficiency” moves,
-it’s unsurprising that corporate loyalty is a contingent proposition.
+Millennials, everyone’s favourite scapegoat generation, get a bad rap for showing a lack of
+appropriate corporate loyalty. For generations who had parents affected by the “corporate
+efficiency” moves, it’s unsurprising that corporate loyalty is a contingent proposition.
 
 You can still build up loyalty capital with younger generations (not to mention that millennials are
 now entering their 40s), it just takes more work – it doesn’t come for free, and it’s not limitless.
