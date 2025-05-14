@@ -10,9 +10,9 @@
   "author": "Sam Minnée <sam.minnee@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy": "^3.1.0",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.1",
     "@shopify/prettier-plugin-liquid": "^1.6.3",
     "prettier": "^3.5.3"
   }
