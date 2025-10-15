@@ -24,7 +24,7 @@ spec:
           name: noop@internal
       middlewares:
         - name: force-https
-          namespace: traefik
+          namespace: default
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -44,7 +44,7 @@ spec:
           port: 80
       middlewares:
         - name: rate-limit
-          namespace: traefik
+          namespace: default
     # Redirect to the canonical domain for these 2 HTTP domains
     - match: "Host(`www.sminn.ee`) || Host(`words.sminn.ee`)"
       kind: Rule

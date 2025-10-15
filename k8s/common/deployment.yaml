@@ -28,7 +28,7 @@ spec:
         app.kubernetes.io/part-of: sminnee
     spec:
       containers:
-        - image: "registry.sminn.ee/tangerine/sminnee-www:latest"
+        - image: "registry.sminn.ee/tangerine/sminnee-www:${IMAGE_TAG}"
           name: www
           resources: {}
       imagePullSecrets:
