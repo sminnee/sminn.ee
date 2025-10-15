@@ -3,9 +3,6 @@
 # Deploys manifests from k8s/ directory to sminnee-prod namespace
 # Requires that kubectl is authenticated
 
-APP=sminnee-www
-
-IMAGE=registry.sminn.ee/tangerine/$APP
 TAGPREFIX=""
 
 NAMESPACE=sminnee-prod
@@ -21,18 +18,13 @@ if [ "$LINODE_DEPLOY_KEY" = "" ]; then
   exit 2
 fi
 
-IMAGE_FULL="$IMAGE:$TAGPREFIX$1"
-
 echo "$LINODE_DEPLOY_KEY" > bin/github-deploy.key
 
-# Apply all common manifests
-KUBECONFIG=bin/kubeconfig.yaml kubectl apply -f k8s/common/ -n $NAMESPACE
-
-# Apply environment-specific manifests (ingress, etc.)
-KUBECONFIG=bin/kubeconfig.yaml kubectl apply -f k8s/prod/ -n $NAMESPACE
-
-# Update the image tag
-KUBECONFIG=bin/kubeconfig.yaml kubectl set image deployment/$DEPLOYMENT -n $NAMESPACE "www=$IMAGE_FULL"
+# Apply all manifests with image tag substitution
+export IMAGE_TAG="$TAGPREFIX$1"
+for file in k8s/common/*.yaml k8s/prod/*.yaml; do
+  envsubst '$IMAGE_TAG' < "$file" | KUBECONFIG=bin/kubeconfig.yaml kubectl apply -f - -n $NAMESPACE
+done
 
 # Wait for rollout to complete
 KUBECONFIG=bin/kubeconfig.yaml kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE --timeout=60s
