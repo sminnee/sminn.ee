@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Deploys a pushed docker image nudging the deployment's tag ref
+# Deploys manifests from k8s/ directory to sminnee-prod namespace
 # Requires that kubectl is authenticated
 
 APP=sminnee-www
@@ -8,11 +8,8 @@ APP=sminnee-www
 IMAGE=registry.sminn.ee/tangerine/$APP
 TAGPREFIX=""
 
-# Name of the deployment (assumes the default namespace)
-DEPLOYMENT=$APP
-
-# Named container in that deployment
-CONTAINER=$DEPLOYMENT
+NAMESPACE=sminnee-prod
+DEPLOYMENT=www
 
 if [ "$1" = "" ]; then
     echo "Usage: $0 (tag)"
@@ -27,12 +24,22 @@ fi
 IMAGE_FULL="$IMAGE:$TAGPREFIX$1"
 
 echo "$LINODE_DEPLOY_KEY" > bin/github-deploy.key
-KUBECONFIG=bin/kubeconfig.yaml kubectl set image deployment/$DEPLOYMENT "$CONTAINER=$IMAGE_FULL"
-KUBECONFIG=bin/kubeconfig.yaml kubectl rollout status deployment/$DEPLOYMENT --timeout=15s
+
+# Apply all common manifests
+KUBECONFIG=bin/kubeconfig.yaml kubectl apply -f k8s/common/ -n $NAMESPACE
+
+# Apply environment-specific manifests (ingress, etc.)
+KUBECONFIG=bin/kubeconfig.yaml kubectl apply -f k8s/prod/ -n $NAMESPACE
+
+# Update the image tag
+KUBECONFIG=bin/kubeconfig.yaml kubectl set image deployment/$DEPLOYMENT -n $NAMESPACE "www=$IMAGE_FULL"
+
+# Wait for rollout to complete
+KUBECONFIG=bin/kubeconfig.yaml kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE --timeout=60s
 
 if [ "$?" != "0" ]; then
   echo "Rolling back"
-  KUBECONFIG=bin/kubeconfig.yaml kubectl rollout undo deployment $APP
+  KUBECONFIG=bin/kubeconfig.yaml kubectl rollout undo deployment/$DEPLOYMENT -n $NAMESPACE
   rm bin/github-deploy.key
   exit 1
 fi
