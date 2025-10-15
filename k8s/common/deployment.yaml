@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: www
+  labels:
+    app: www
+    app.kubernetes.io/instance: www
+    app.kubernetes.io/name: www
+    app.kubernetes.io/managed-by: tangerine-k8s-cluster
+    app.kubernetes.io/component: app
+    app.kubernetes.io/part-of: sminnee
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: www
+  minReadySeconds: 10
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: www
+        app.kubernetes.io/instance: www
+        app.kubernetes.io/name: www
+        app.kubernetes.io/managed-by: tangerine-k8s-cluster
+        app.kubernetes.io/component: app
+        app.kubernetes.io/part-of: sminnee
+    spec:
+      containers:
+        - image: "registry.sminn.ee/tangerine/sminnee-www:latest"
+          name: www
+          resources: {}
+      imagePullSecrets:
+        - name: registry-access
