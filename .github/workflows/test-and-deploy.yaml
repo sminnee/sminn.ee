@@ -54,4 +54,4 @@ jobs:
       - name: Update Kubernetes deployment
         run: bin/deploy $(echo $GITHUB_SHA | head -c7)
         env:
-          LINODE_DEPLOY_KEY: ${{ secrets.LINODE_DEPLOY_KEY }}
+          KUBECONFIG_DATA: ${{ secrets.KUBECONFIG_DATA }}

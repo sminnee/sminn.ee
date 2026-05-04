@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Deploys manifests from k8s/ directory to sminnee-prod namespace
-# Requires that kubectl is authenticated
-
-TAGPREFIX=""
+# Deploys manifests from k8s/ directory to sminnee-prod namespace.
+# Reads cluster credentials from KUBECONFIG_DATA (a complete kubeconfig YAML
+# with CA + client cert + key inline). Provisioned and rotated by
+# k8s-cluster's bin/secretmgr; pushed to this repo's GitHub Actions secrets.
 
 NAMESPACE=sminnee-prod
 DEPLOYMENT=www
@@ -13,27 +13,28 @@ if [ "$1" = "" ]; then
     exit 1
 fi
 
-if [ "$LINODE_DEPLOY_KEY" = "" ]; then
-  echo "Set LINODE_DEPLOY_KEY env var to the OpenSSL private key Kubernetes access"
+if [ "$KUBECONFIG_DATA" = "" ]; then
+  echo "Set KUBECONFIG_DATA env var to a complete kubeconfig YAML for cluster access"
   exit 2
 fi
 
-echo "$LINODE_DEPLOY_KEY" > bin/github-deploy.key
+KUBECONFIG_FILE=$(mktemp)
+chmod 600 "$KUBECONFIG_FILE"
+echo "$KUBECONFIG_DATA" > "$KUBECONFIG_FILE"
+export KUBECONFIG="$KUBECONFIG_FILE"
+trap 'rm -f "$KUBECONFIG_FILE"' EXIT
 
 # Apply all manifests with image tag substitution
-export IMAGE_TAG="$TAGPREFIX$1"
+export IMAGE_TAG="$1"
 for file in k8s/common/*.yaml k8s/prod/*.yaml; do
-  envsubst '$IMAGE_TAG' < "$file" | KUBECONFIG=bin/kubeconfig.yaml kubectl apply -f - -n $NAMESPACE
+  envsubst '$IMAGE_TAG' < "$file" | kubectl apply -f - -n $NAMESPACE
 done
 
 # Wait for rollout to complete
-KUBECONFIG=bin/kubeconfig.yaml kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE --timeout=60s
+kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE --timeout=60s
 
 if [ "$?" != "0" ]; then
   echo "Rolling back"
-  KUBECONFIG=bin/kubeconfig.yaml kubectl rollout undo deployment/$DEPLOYMENT -n $NAMESPACE
-  rm bin/github-deploy.key
+  kubectl rollout undo deployment/$DEPLOYMENT -n $NAMESPACE
   exit 1
 fi
-
-rm bin/github-deploy.key
