@@ -26,6 +26,20 @@ spec:
         - name: force-https
           namespace: default
 ---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: www-tls
+spec:
+  secretName: www-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - sminn.ee
+    - www.sminn.ee
+    - words.sminn.ee
+---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -34,7 +48,7 @@ spec:
   entryPoints:
     - websecure
   tls:
-    certResolver: myresolver
+    secretName: www-tls
   routes:
     # Service the application on this domain
     - match: "Host(`sminn.ee`)"
