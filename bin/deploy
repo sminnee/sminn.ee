@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Deploys manifests from k8s/ directory to sminnee-prod namespace.
-# Reads cluster credentials from KUBECONFIG_DATA (a complete kubeconfig YAML
-# with CA + client cert + key inline). Provisioned and rotated by
-# k8s-cluster's bin/secretmgr; pushed to this repo's GitHub Actions secrets.
+# Cluster access is via the active kubeconfig context. In CI this is set up by
+# `tailscale configure kubeconfig` pointing kubectl at the tailscale-operator
+# API-server proxy over the tailnet.
 
 NAMESPACE=sminnee-prod
 DEPLOYMENT=www
@@ -12,17 +12,6 @@ if [ "$1" = "" ]; then
     echo "Usage: $0 (tag)"
     exit 1
 fi
-
-if [ "$KUBECONFIG_DATA" = "" ]; then
-  echo "Set KUBECONFIG_DATA env var to a complete kubeconfig YAML for cluster access"
-  exit 2
-fi
-
-KUBECONFIG_FILE=$(mktemp)
-chmod 600 "$KUBECONFIG_FILE"
-echo "$KUBECONFIG_DATA" > "$KUBECONFIG_FILE"
-export KUBECONFIG="$KUBECONFIG_FILE"
-trap 'rm -f "$KUBECONFIG_FILE"' EXIT
 
 # Apply all manifests with image tag substitution
 export IMAGE_TAG="$1"
