@@ -56,7 +56,9 @@ jobs:
           TAILSCALE_OAUTH: ${{ secrets.TAILSCALE_OAUTH }}
         run: |
           echo "TS_CLIENT_ID=$(printf '%s\n' "$TAILSCALE_OAUTH" | sed -n 's/^client_id: *//p')" >> "$GITHUB_ENV"
-          echo "TS_SECRET=$(printf '%s\n' "$TAILSCALE_OAUTH"   | sed -n 's/^client_secret: *//p')" >> "$GITHUB_ENV"
+          client_secret=$(printf '%s\n' "$TAILSCALE_OAUTH" | sed -n 's/^client_secret: *//p')
+          echo "::add-mask::$client_secret"
+          echo "TS_SECRET=$client_secret" >> "$GITHUB_ENV"
 
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
