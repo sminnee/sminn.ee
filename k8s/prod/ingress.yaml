@@ -59,6 +59,8 @@ spec:
       middlewares:
         - name: rate-limit
           namespace: default
+        - name: fail2ban
+          namespace: default
     # Redirect to the canonical domain for these 2 HTTP domains
     - match: "Host(`www.sminn.ee`) || Host(`words.sminn.ee`)"
       kind: Rule
@@ -67,3 +69,7 @@ spec:
           name: noop@internal
       middlewares:
         - name: canonical-domain
+        - name: rate-limit
+          namespace: default
+        - name: fail2ban
+          namespace: default
