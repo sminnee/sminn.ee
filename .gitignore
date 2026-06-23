@@ -1,2 +1,4 @@
 _site/
 node_modules/
+.claude/CLAUDE.local.md
+.env
