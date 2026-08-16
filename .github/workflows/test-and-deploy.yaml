@@ -47,24 +47,30 @@ jobs:
     needs:
       - build
 
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - name: Checkout main
         uses: actions/checkout@master
 
-      - name: Parse Tailscale OAuth secret
+      - name: Check Tailscale deploy variables are set
         env:
-          TAILSCALE_OAUTH: ${{ secrets.TAILSCALE_OAUTH }}
+          TS_DEPLOY_CLIENT_ID: ${{ vars.TS_DEPLOY_CLIENT_ID }}
+          TS_DEPLOY_AUDIENCE: ${{ vars.TS_DEPLOY_AUDIENCE }}
         run: |
-          echo "TS_CLIENT_ID=$(printf '%s\n' "$TAILSCALE_OAUTH" | sed -n 's/^client_id: *//p')" >> "$GITHUB_ENV"
-          client_secret=$(printf '%s\n' "$TAILSCALE_OAUTH" | sed -n 's/^client_secret: *//p')
-          echo "::add-mask::$client_secret"
-          echo "TS_SECRET=$client_secret" >> "$GITHUB_ENV"
+          # An unset Actions variable expands to an empty string, and neither
+          # input is required by the action — without this the deploy fails
+          # somewhere inside Tailscale auth instead of naming the cause.
+          : "${TS_DEPLOY_CLIENT_ID:?not set — add the Actions variable}"
+          : "${TS_DEPLOY_AUDIENCE:?not set — add the Actions variable}"
 
       - name: Connect to Tailscale
-        uses: tailscale/github-action@v3
+        uses: tailscale/github-action@780049a30b6ff5c378a9e7b389d15ece7a204888 # v4.1.3
         with:
-          oauth-client-id: ${{ env.TS_CLIENT_ID }}
-          oauth-secret: ${{ env.TS_SECRET }}
+          oauth-client-id: ${{ vars.TS_DEPLOY_CLIENT_ID }}
+          audience: ${{ vars.TS_DEPLOY_AUDIENCE }}
           tags: tag:sminnee-prod-deploy
 
       - name: Configure kubeconfig over tailnet
